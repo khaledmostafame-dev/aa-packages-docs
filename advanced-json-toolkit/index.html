@@ -1,0 +1,882 @@
+<!doctype html><html lang=en><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Advanced JSON Toolkit 1.2.0 &mdash; documentation</title>
+<meta name=description content="Advanced JSON Toolkit is a single Automation 360 package that gives a bot 47 actions for working with JSON: reading it, querying it, converting it to and from the data types a bot ">
+<style>
+:root{
+  --bg:#ffffff; --fg:#1a1d21; --muted:#5b6672; --line:#e3e8ee; --soft:#f6f8fa;
+  --accent:#1668c1; --accent-soft:#eaf2fb; --brand:#ff6a00; --code:#0b3d66;
+  --req:#b42318; --req-bg:#fef3f2;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#0f1419; --fg:#e6edf3; --muted:#9aa7b4; --line:#232c36; --soft:#161c23;
+  --accent:#5aa9f8; --accent-soft:#132433; --code:#8ecbff; --req:#ff9c92; --req-bg:#2a1614;
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1.5rem}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,kbd{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.88em;
+  background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:.1em .4em;color:var(--code)}
+pre{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;
+  overflow:auto;font-size:.86rem;line-height:1.55}
+pre code{background:none;border:0;padding:0}
+.wrap{max-width:1220px;margin:0 auto;padding:0 1.5rem}
+header.top{border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:20}
+header.top .wrap{display:flex;align-items:center;gap:1rem;padding-top:.9rem;padding-bottom:.9rem}
+.mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--brand));
+  flex:0 0 auto}
+.titles h1{font-size:1.05rem;margin:0;letter-spacing:-.01em}
+.titles p{margin:0;color:var(--muted);font-size:.8rem}
+.pill{margin-left:auto;font-size:.76rem;color:var(--muted);border:1px solid var(--line);
+  border-radius:999px;padding:.25rem .7rem;white-space:nowrap}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:2.5rem;padding:2rem 0 4rem}
+nav.side{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;
+  font-size:.875rem;padding-right:.5rem}
+nav.side h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);
+  margin:1.25rem 0 .45rem}
+nav.side a{display:block;padding:.2rem 0;color:var(--fg)}
+nav.side a:hover{color:var(--accent);text-decoration:none}
+#filter{width:100%;padding:.5rem .7rem;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--fg);font-size:.875rem;margin-bottom:.4rem}
+#filter:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+h2{font-size:1.5rem;margin:2.6rem 0 .8rem;letter-spacing:-.015em;padding-top:.4rem}
+h2:first-of-type{margin-top:0}
+h3{font-size:1.08rem;margin:0 0 .35rem;letter-spacing:-.01em}
+.lede{font-size:1.06rem;color:var(--muted);margin:.4rem 0 1.4rem}
+ul.clean{padding-left:1.15rem;margin:.6rem 0}
+ul.clean li{margin:.32rem 0}
+.group{margin:2rem 0 .6rem;display:flex;align-items:center;gap:.6rem}
+.group h3{font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0}
+.group .rule{flex:1;height:1px;background:var(--line)}
+.action{border:1px solid var(--line);border-radius:12px;padding:1.05rem 1.2rem;margin:.7rem 0;
+  background:var(--bg);transition:border-color .15s,box-shadow .15s}
+.action:target{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.action .desc{color:var(--muted);margin:.1rem 0 .5rem;font-size:.94rem}
+.anchor{float:right;color:var(--muted);font-size:.8rem;opacity:0;transition:opacity .15s}
+.action:hover .anchor{opacity:1}
+table{border-collapse:collapse;width:100%;font-size:.875rem;margin:.55rem 0 .2rem}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:.74rem;text-transform:uppercase;
+  letter-spacing:.06em;border-bottom:1px solid var(--line);padding:.4rem .6rem .4rem 0}
+td{border-bottom:1px solid var(--line);padding:.44rem .6rem .44rem 0;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.nm{width:34%}
+.req{color:var(--req);background:var(--req-bg);border-radius:4px;padding:.02em .35em;font-size:.72rem;
+  margin-left:.35rem;white-space:nowrap}
+.choices{color:var(--muted);font-size:.83rem}
+.ret{margin-top:.6rem;padding-top:.55rem;border-top:1px dashed var(--line);font-size:.875rem}
+.ret b{font-weight:600}
+.nest{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:.8rem;margin:1rem 0}
+.card{border:1px solid var(--line);border-radius:11px;padding:.85rem 1rem;background:var(--soft)}
+.card b{display:block;font-size:1.35rem;letter-spacing:-.02em}
+.card span{color:var(--muted);font-size:.8rem}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 9px 9px 0;
+  padding:.8rem 1rem;margin:1rem 0;font-size:.92rem}
+footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.6rem 0 3rem;color:var(--muted);
+  font-size:.82rem}
+footer p{margin:.35rem 0}
+.hidden{display:none !important}
+@media(max-width:940px){
+  .layout{grid-template-columns:1fr;gap:1rem}
+  nav.side{position:static;max-height:none;border-bottom:1px solid var(--line);padding-bottom:1rem}
+}
+</style>
+<header class=top><div class=wrap><div class=mark></div><div class=titles>
+<h1>Advanced JSON Toolkit</h1><p>Automation 360 package &middot; by KhaledMostafaMe</p></div>
+<span class=pill>v1.2.0 &middot; 47 actions</span></div></header>
+<div class="wrap layout"><nav class=side>
+<input id=filter type=search placeholder="Filter actions&hellip;" aria-label="Filter actions">
+<h4>Guide</h4>
+<a href="#overview">Overview</a>
+<a href="#requirements">Requirements</a>
+<a href="#install">Install</a>
+<a href="#action-reference">Action reference</a>
+<a href="#faq">FAQ</a>
+<a href="#attribution">Attribution</a>
+<h4>Parse / Validate</h4>
+<a data-act="validate json" href="#validatejson">Validate JSON</a>
+<a data-act="detect json value type" href="#detectjsontype">Detect JSON Value Type</a>
+<a data-act="get json parse error detail" href="#getparseerror">Get JSON Parse Error Detail</a>
+<h4>Query</h4>
+<a data-act="jsonpath query (single)" href="#jsonpathquery">JSONPath Query (single)</a>
+<a data-act="jsonpath query (multiple -&gt; list)" href="#jsonpathquerylist">JSONPath Query (multiple -&gt; List)</a>
+<a data-act="jsonpath query to table" href="#jsonpathtotable">JSONPath Query to Table</a>
+<a data-act="json pointer get (rfc 6901)" href="#jsonpointerget">JSON Pointer Get (RFC 6901)</a>
+<a data-act="key / path exists" href="#jsonkeyexists">Key / Path Exists</a>
+<h4>Convert In</h4>
+<a data-act="json to dictionary" href="#jsontodictionary">JSON to Dictionary</a>
+<a data-act="json to list" href="#jsontolist">JSON to List</a>
+<a data-act="json to table" href="#jsontotable">JSON to Table</a>
+<a data-act="json to record" href="#jsontorecord">JSON to Record</a>
+<h4>Convert Out</h4>
+<a data-act="dictionary to json" href="#dictionarytojson">Dictionary to JSON</a>
+<a data-act="list to json" href="#listtojson">List to JSON</a>
+<a data-act="table to json" href="#tabletojson">Table to JSON</a>
+<a data-act="json to csv" href="#jsontocsv">JSON to CSV</a>
+<a data-act="json to xml" href="#jsontoxml">JSON to XML</a>
+<a data-act="json to yaml" href="#jsontoyaml">JSON to YAML</a>
+<a data-act="json to ndjson (json lines)" href="#jsontondjson">JSON to NDJSON (JSON Lines)</a>
+<a data-act="json to query string" href="#jsontoquerystring">JSON to Query String</a>
+<h4>Transform</h4>
+<a data-act="apply json merge patch (rfc 7386)" href="#jsonmergepatch">Apply JSON Merge Patch (RFC 7386)</a>
+<a data-act="apply json patch (rfc 6902)" href="#jsonpatchapply">Apply JSON Patch (RFC 6902)</a>
+<a data-act="json diff (produce rfc 6902 patch)" href="#jsondiff">JSON Diff (produce RFC 6902 Patch)</a>
+<a data-act="deep merge two json" href="#jsondeepmerge">Deep Merge Two JSON</a>
+<a data-act="flatten json (lossless)" href="#jsonflatten">Flatten JSON (lossless)</a>
+<a data-act="unflatten json" href="#jsonunflatten">Unflatten JSON</a>
+<a data-act="set value at path (immutable)" href="#jsonsetvalue">Set Value at Path (immutable)</a>
+<a data-act="remove value at path (immutable)" href="#jsonremovevalue">Remove Value at Path (immutable)</a>
+<a data-act="sort json keys" href="#jsonsortkeys">Sort JSON Keys</a>
+<h4>Schema</h4>
+<a data-act="validate against json schema (subset)" href="#validatejsonschema">Validate Against JSON Schema (subset)</a>
+<h4>Utility</h4>
+<a data-act="pretty print / minify json" href="#prettyprintjson">Pretty Print / Minify JSON</a>
+<a data-act="escape / unescape json string" href="#escapeunescapejson">Escape / Unescape JSON String</a>
+<a data-act="json deep equals" href="#jsondeepequals">JSON Deep Equals</a>
+<a data-act="json size / count" href="#jsonsizecount">JSON Size / Count</a>
+<h4>Convert In (reverse)</h4>
+<a data-act="csv to json" href="#csvtojson">CSV to JSON</a>
+<a data-act="csv to table" href="#csvtotable">CSV to Table</a>
+<a data-act="xml to json" href="#xmltojson">XML to JSON</a>
+<a data-act="ndjson (json lines) to list" href="#ndjsontojson">NDJSON (JSON Lines) to List</a>
+<a data-act="query string to json" href="#querystringtojson">Query String to JSON</a>
+<a data-act="decode jwt (no verify)" href="#jwtdecode">Decode JWT (no verify)</a>
+<h4>Arrays / Datasets</h4>
+<a data-act="filter array" href="#filterarray">Filter Array</a>
+<a data-act="sort array" href="#sortarray">Sort Array</a>
+<a data-act="group by + aggregate" href="#groupbyaggregate">Group By + Aggregate</a>
+<a data-act="deduplicate array" href="#deduplicatearray">Deduplicate Array</a>
+<a data-act="select fields (pick / omit)" href="#selectfields">Select Fields (pick / omit)</a>
+<a data-act="rename keys" href="#renamekeys">Rename Keys</a>
+<h4>Privacy</h4>
+<a data-act="redact / mask json" href="#redactjson">Redact / Mask JSON</a>
+</nav><main>
+<h2 id=overview>Overview</h2>
+<p class=lede>Advanced JSON Toolkit is a single Automation 360 package that gives a bot 47 actions for working with JSON: reading it, querying it, converting it to and from the data types a bot actually uses, transforming it, validating it, and redacting it.</p>
+<p>In plain terms: whenever a bot receives JSON from an API, a file or a queue, this package turns it into a Dictionary, List or Table a bot can loop over - and turns bot data back into JSON to send onward - without losing anything on the way.</p>
+<p>JSON handling looks simple until production data arrives. A 19-digit record identifier has to survive a round trip unchanged. A rate of 0.0000001 has to stay in plain notation rather than becoming 1E-7. A query that lands on an object or an array has to return an object or an array, not text. Key order has to hold when a downstream system signs or compares the payload. Arabic and other non-Latin content has to come back as it went in. Those requirements are the design brief for this package, and every action is built to meet them.</p>
+<p>The package bundles the libraries it needs - Jackson 2.18.3, Jayway JSONPath 2.9.0 and json-smart 2.5.2 - exactly as Automation Anywhere&#x27;s own JSON package does, because the Bot Agent does not put them on a custom package&#x27;s classpath. Everything runs inside the package&#x27;s own classloader, nothing is installed on the agent, and it makes no network call of any kind.</p>
+<p>It uses its own unique package name, so it installs alongside whatever you use today and can be adopted one action at a time.</p>
+<div class=cards>
+<div class=card><b>47</b><span>actions</span></div>
+<div class=card><b>0</b><span>credentials needed</span></div>
+<div class=card><b>0</b><span>network calls</span></div>
+<div class=card><b>v1.2.0</b><span>current version</span></div>
+</div>
+<h2 id=requirements>Requirements</h2><ul class=clean>
+<li>Automation 360 Control Room able to accept custom packages (Java bytecode 55 / JDK 11). Cloud or on-premises.</li>
+<li>Bot Agent on Windows. The package is pure Java and also declares macOS as a target, but it has been validated on Windows only.</li>
+<li>About 3 MB on disk. The jar carries this package&#x27;s own classes plus the libraries it bundles (Jackson, Jayway JSONPath, json-smart, ASM), its manifest, locales, icon and licence files.</li>
+<li>Control Room build 8750 or above and Bot Agent 20.11 or above - the minimum each action declares. Validated on Bot Agent 23.0.32.</li>
+</ul>
+<ul class=clean>
+<li>No software to install on the Bot Agent. Everything the package needs - Jackson, Jayway JSONPath, json-smart and ASM - is bundled inside the jar and loaded in the package&#x27;s own classloader.</li>
+<li>No licence key, no subscription and no account with any external service.</li>
+<li>No Credential Vault locker and no credentials of any kind.</li>
+<li>No network access. The package never makes an outbound call; it operates only on the strings and files you give it.</li>
+<li>Where an action writes to a file, the Bot Agent needs write permission on that path. Parent folders are created if missing and an existing file is overwritten.</li>
+<li>Standard bot-execution rights. Administrator rights are not required.</li>
+</ul>
+<h2 id=install>Install</h2><ul class=clean>
+<li>Download AdvancedJsonToolkit-1.2.0.jar from the Agentic App Store listing.</li>
+<li>In the Control Room, go to Manage, then Packages, then Add package, then Browse.</li>
+<li>Select the jar and upload it, then choose Accept and enable.</li>
+<li>Open a Task Bot. The actions now appear in the Actions palette, grouped by purpose - Parse and Validate, Query, Convert, Transform, Schema, Utility, Arrays and Datasets, and Privacy.</li>
+<li>There is no external account, portal or API key to configure - setup is complete at this point.</li>
+<li>Optional: because this package uses its own unique name, it coexists with the existing JSON packages. Migrate bots one action at a time rather than all at once.</li>
+</ul>
+<h2 id=action-reference>Action reference</h2>
+<p class=lede>Every action, its inputs and what it returns. Required inputs are marked.</p>
+<div class=group><h3>Parse / Validate</h3><div class=rule></div></div>
+<section class=action id="validatejson" data-search="validate json validate json and return {valid,error,line,column,roottype}. a parse failure is never disguised as success. validatejson">
+<a class=anchor href="#validatejson" aria-label="Link to this action">#</a>
+<h3>Validate JSON</h3>
+<p class=desc>Validate JSON and return {valid,error,line,column,rootType}. A parse failure is never disguised as success.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Throw an error if invalid (otherwise return valid=false)</td><td>True / False</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign the validation result to variable</div>
+</section>
+<section class=action id="detectjsontype" data-search="detect json value type report the type of the root json value: object | array | string | number | boolean | null. detectjsontype">
+<a class=anchor href="#detectjsontype" aria-label="Link to this action">#</a>
+<h3>Detect JSON Value Type</h3>
+<p class=desc>Report the type of the root JSON value: object | array | string | number | boolean | null.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the type name to variable</div>
+</section>
+<section class=action id="getparseerror" data-search="get json parse error detail return {valid,message,line,column,offset} for a json document. never throws. getparseerror">
+<a class=anchor href="#getparseerror" aria-label="Link to this action">#</a>
+<h3>Get JSON Parse Error Detail</h3>
+<p class=desc>Return {valid,message,line,column,offset} for a JSON document. Never throws.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign the error detail to variable</div>
+</section>
+<div class=group><h3>Query</h3><div class=rule></div></div>
+<section class=action id="jsonpathquery" data-search="jsonpath query (single) evaluate a jsonpath and return the single matched value as a typed variable (object/array/number/boolean/text). jsonpathquery">
+<a class=anchor href="#jsonpathquery" aria-label="Link to this action">#</a>
+<h3>JSONPath Query (single)</h3>
+<p class=desc>Evaluate a JSONPath and return the single matched value as a typed variable (object/array/number/boolean/text).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath (e.g. $.user.id)<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Result form</td><td>Choice</td><td><span class=choices>Typed value &middot; JSON string</span></td></tr>
+<tr><td class=nm>If the path is missing<span class=req>required</span></td><td>Choice</td><td><span class=choices>Throw an error &middot; Return a default value &middot; Return empty text</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Default value</td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Any type &mdash; Assign the matched value to variable</div>
+</section>
+<section class=action id="jsonpathquerylist" data-search="jsonpath query (multiple -&gt; list) evaluate a jsonpath as a collection; return every match as a typed list (empty list when none). jsonpathquerylist">
+<a class=anchor href="#jsonpathquerylist" aria-label="Link to this action">#</a>
+<h3>JSONPath Query (multiple -&gt; List)</h3>
+<p class=desc>Evaluate a JSONPath as a collection; return every match as a typed List (empty List when none).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath (definite or indefinite)<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the matches to a List variable</div>
+</section>
+<section class=action id="jsonpathtotable" data-search="jsonpath query to table resolve a jsonpath to an array of objects and build a table with a full union header and typed cells. jsonpathtotable">
+<a class=anchor href="#jsonpathtotable" aria-label="Link to this action">#</a>
+<h3>JSONPath Query to Table</h3>
+<p class=desc>Resolve a JSONPath to an array of objects and build a Table with a full union header and typed cells.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath to an array of objects<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Explicit ordered columns (optional)</td><td>List</td><td></td></tr>
+<tr><td class=nm>Null / missing cell as</td><td>Choice</td><td><span class=choices>Empty &middot; Empty string &middot; Text &#x27;null&#x27;</span></td></tr>
+<tr><td class=nm>Numbers as</td><td>Choice</td><td><span class=choices>Exact number &middot; String (never coerced)</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Table &mdash; Assign the Table to variable</div>
+</section>
+<section class=action id="jsonpointerget" data-search="json pointer get (rfc 6901) read a value by rfc 6901 pointer (e.g. /user/name, /a~1b for a literal &#x27;a/b&#x27; key). distinguishes dotted keys from nesting. jsonpointerget">
+<a class=anchor href="#jsonpointerget" aria-label="Link to this action">#</a>
+<h3>JSON Pointer Get (RFC 6901)</h3>
+<p class=desc>Read a value by RFC 6901 pointer (e.g. /user/name, /a~1b for a literal &#x27;a/b&#x27; key). Distinguishes dotted keys from nesting.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSON Pointer (e.g. /user/name)<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>If the pointer is missing<span class=req>required</span></td><td>Choice</td><td><span class=choices>Throw an error &middot; Return a default value &middot; Return empty text</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Default value</td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Any type &mdash; Assign the value to variable</div>
+</section>
+<section class=action id="jsonkeyexists" data-search="key / path exists return true/false for whether a path exists. present-but-null counts as existing. jsonkeyexists">
+<a class=anchor href="#jsonkeyexists" aria-label="Link to this action">#</a>
+<h3>Key / Path Exists</h3>
+<p class=desc>Return true/false for whether a path exists. Present-but-null counts as existing.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Path type</td><td>Choice</td><td><span class=choices>JSON Pointer &middot; JSONPath</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> True / False &mdash; Assign true/false to variable</div>
+</section>
+<div class=group><h3>Convert In</h3><div class=rule></div></div>
+<section class=action id="jsontodictionary" data-search="json to dictionary convert a json object to a nested dictionary with exact numbers, preserved key order and real utf-8. jsontodictionary">
+<a class=anchor href="#jsontodictionary" aria-label="Link to this action">#</a>
+<h3>JSON to Dictionary</h3>
+<p class=desc>Convert a JSON object to a nested Dictionary with exact numbers, preserved key order and real UTF-8.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Numbers as</td><td>Choice</td><td><span class=choices>Exact number &middot; String (never coerced)</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign the Dictionary to variable</div>
+</section>
+<section class=action id="jsontolist" data-search="json to list convert a json array to a typed list (a single object is wrapped as a one-element list). jsontolist">
+<a class=anchor href="#jsontolist" aria-label="Link to this action">#</a>
+<h3>JSON to List</h3>
+<p class=desc>Convert a JSON array to a typed List (a single object is wrapped as a one-element List).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Numbers as</td><td>Choice</td><td><span class=choices>Exact number &middot; String (never coerced)</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the List to variable</div>
+</section>
+<section class=action id="jsontotable" data-search="json to table convert an array of objects to a table (full union header, typed cells, deterministic column order). jsontotable">
+<a class=anchor href="#jsontotable" aria-label="Link to this action">#</a>
+<h3>JSON to Table</h3>
+<p class=desc>Convert an array of objects to a Table (full union header, typed cells, deterministic column order).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath to the array of records (default $)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Explicit ordered columns (optional)</td><td>List</td><td></td></tr>
+<tr><td class=nm>Null / missing cell as</td><td>Choice</td><td><span class=choices>Empty &middot; Empty string &middot; Text &#x27;null&#x27;</span></td></tr>
+<tr><td class=nm>Numbers as</td><td>Choice</td><td><span class=choices>Exact number &middot; String (never coerced)</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Table &mdash; Assign the Table to variable</div>
+</section>
+<section class=action id="jsontorecord" data-search="json to record convert a single json object to a record with typed values (schema order optional). jsontorecord">
+<a class=anchor href="#jsontorecord" aria-label="Link to this action">#</a>
+<h3>JSON to Record</h3>
+<p class=desc>Convert a single JSON object to a Record with typed values (schema order optional).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath to the object (default $)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Ordered column names (optional)</td><td>List</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Record &mdash; Assign the Record to variable</div>
+</section>
+<div class=group><h3>Convert Out</h3><div class=rule></div></div>
+<section class=action id="dictionarytojson" data-search="dictionary to json serialize a dictionary to json with exact numbers (no scientific notation), stable order, utf-8. dictionarytojson">
+<a class=anchor href="#dictionarytojson" aria-label="Link to this action">#</a>
+<h3>Dictionary to JSON</h3>
+<p class=desc>Serialize a Dictionary to JSON with exact numbers (no scientific notation), stable order, UTF-8.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>Dictionary<span class=req>required</span></td><td>Dictionary</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Sort keys</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the JSON (or file path) to variable</div>
+</section>
+<section class=action id="listtojson" data-search="list to json serialize a list to a json array with exact numbers and recursion into nested lists/dictionaries. listtojson">
+<a class=anchor href="#listtojson" aria-label="Link to this action">#</a>
+<h3>List to JSON</h3>
+<p class=desc>Serialize a List to a JSON array with exact numbers and recursion into nested Lists/Dictionaries.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>List<span class=req>required</span></td><td>List</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the JSON (or file path) to variable</div>
+</section>
+<section class=action id="tabletojson" data-search="table to json serialize a table to json (array of objects or array of arrays) with typed cells. tabletojson">
+<a class=anchor href="#tabletojson" aria-label="Link to this action">#</a>
+<h3>Table to JSON</h3>
+<p class=desc>Serialize a Table to JSON (array of objects or array of arrays) with typed cells.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>Table<span class=req>required</span></td><td>Table</td><td></td></tr>
+<tr><td class=nm>Shape</td><td>Choice</td><td><span class=choices>Array of objects &middot; Array of arrays</span></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsontocsv" data-search="json to csv convert an array of objects to rfc 4180 csv with a full union header, correct quoting and plain numbers. jsontocsv">
+<a class=anchor href="#jsontocsv" aria-label="Link to this action">#</a>
+<h3>JSON to CSV</h3>
+<p class=desc>Convert an array of objects to RFC 4180 CSV with a full union header, correct quoting and plain numbers.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath to the array of records (default $)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Delimiter (default ,)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Quote every field</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Include header row</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Explicit ordered columns (optional)</td><td>List</td><td></td></tr>
+<tr><td class=nm>CSV-injection guard (prefix cells starting with = + - @)</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the CSV (or file path) to variable</div>
+</section>
+<section class=action id="jsontoxml" data-search="json to xml convert json to xml (dependency-free; deterministic element order; arrays repeat elements). jsontoxml">
+<a class=anchor href="#jsontoxml" aria-label="Link to this action">#</a>
+<h3>JSON to XML</h3>
+<p class=desc>Convert JSON to XML (dependency-free; deterministic element order; arrays repeat elements).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Root element name (default root)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the XML (or file path) to variable</div>
+</section>
+<section class=action id="jsontoyaml" data-search="json to yaml convert json to yaml (block style, dependency-free; numbers plain; order preserved). jsontoyaml">
+<a class=anchor href="#jsontoyaml" aria-label="Link to this action">#</a>
+<h3>JSON to YAML</h3>
+<p class=desc>Convert JSON to YAML (block style, dependency-free; numbers plain; order preserved).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the YAML (or file path) to variable</div>
+</section>
+<section class=action id="jsontondjson" data-search="json to ndjson (json lines) emit a json array as newline-delimited json (one minified value per line). jsontondjson">
+<a class=anchor href="#jsontondjson" aria-label="Link to this action">#</a>
+<h3>JSON to NDJSON (JSON Lines)</h3>
+<p class=desc>Emit a JSON array as newline-delimited JSON (one minified value per line).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the NDJSON (or file path) to variable</div>
+</section>
+<section class=action id="jsontoquerystring" data-search="json to query string serialize a flat json object to a url query string (arrays repeat the key; values url-encoded). jsontoquerystring">
+<a class=anchor href="#jsontoquerystring" aria-label="Link to this action">#</a>
+<h3>JSON to Query String</h3>
+<p class=desc>Serialize a flat JSON object to a URL query string (arrays repeat the key; values URL-encoded).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the query string to variable</div>
+</section>
+<div class=group><h3>Transform</h3><div class=rule></div></div>
+<section class=action id="jsonmergepatch" data-search="apply json merge patch (rfc 7386) apply an rfc 7386 merge patch (null deletes a key). inputs are never mutated. jsonmergepatch">
+<a class=anchor href="#jsonmergepatch" aria-label="Link to this action">#</a>
+<h3>Apply JSON Merge Patch (RFC 7386)</h3>
+<p class=desc>Apply an RFC 7386 merge patch (null deletes a key). Inputs are never mutated.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Merge patch (JSON)<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the merged JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsonpatchapply" data-search="apply json patch (rfc 6902) apply an rfc 6902 patch (add/remove/replace/move/copy/test) atomically with rfc 6901 pointers. jsonpatchapply">
+<a class=anchor href="#jsonpatchapply" aria-label="Link to this action">#</a>
+<h3>Apply JSON Patch (RFC 6902)</h3>
+<p class=desc>Apply an RFC 6902 patch (add/remove/replace/move/copy/test) atomically with RFC 6901 pointers.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSON Patch operations (array)<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the patched JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsondiff" data-search="json diff (produce rfc 6902 patch) diff two json documents into a minimal rfc 6902 patch (numbers compared by value: 1 == 1.0). jsondiff">
+<a class=anchor href="#jsondiff" aria-label="Link to this action">#</a>
+<h3>JSON Diff (produce RFC 6902 Patch)</h3>
+<p class=desc>Diff two JSON documents into a minimal RFC 6902 patch (numbers compared by value: 1 == 1.0).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Target JSON to compare against<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the patch (or file path) to variable</div>
+</section>
+<section class=action id="jsondeepmerge" data-search="deep merge two json recursively merge two json documents (configurable array strategy). no null-deletion semantics. jsondeepmerge">
+<a class=anchor href="#jsondeepmerge" aria-label="Link to this action">#</a>
+<h3>Deep Merge Two JSON</h3>
+<p class=desc>Recursively merge two JSON documents (configurable array strategy). No null-deletion semantics.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Overlay JSON<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Array strategy</td><td>Choice</td><td><span class=choices>Replace &middot; Concatenate &middot; Merge by index</span></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the merged JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsonflatten" data-search="flatten json (lossless) flatten nested json to a flat dictionary of path -&gt; typed leaf. json pointer style is lossless &amp; round-trippable. jsonflatten">
+<a class=anchor href="#jsonflatten" aria-label="Link to this action">#</a>
+<h3>Flatten JSON (lossless)</h3>
+<p class=desc>Flatten nested JSON to a flat Dictionary of path -&gt; typed leaf. JSON Pointer style is lossless &amp; round-trippable.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Path style</td><td>Choice</td><td><span class=choices>JSON Pointer (lossless) &middot; Dot / bracket</span></td></tr>
+<tr><td class=nm>Keep arrays as whole values</td><td>True / False</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign the flat Dictionary to variable</div>
+</section>
+<section class=action id="jsonunflatten" data-search="unflatten json rebuild nested json from a flat dictionary (inverse of flatten json). json pointer style round-trips exactly. jsonunflatten">
+<a class=anchor href="#jsonunflatten" aria-label="Link to this action">#</a>
+<h3>Unflatten JSON</h3>
+<p class=desc>Rebuild nested JSON from a flat Dictionary (inverse of Flatten JSON). JSON Pointer style round-trips exactly.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>Flat Dictionary (path -&gt; value)<span class=req>required</span></td><td>Dictionary</td><td></td></tr>
+<tr><td class=nm>Path style</td><td>Choice</td><td><span class=choices>JSON Pointer &middot; Dot / bracket</span></td></tr>
+<tr><td class=nm>Rebuild arrays from 0..n indices (off keeps numeric-keyed objects as objects)</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsonsetvalue" data-search="set value at path (immutable) set a native typed value at an rfc 6901 pointer on a deep copy (number stays number, boolean stays boolean). jsonsetvalue">
+<a class=anchor href="#jsonsetvalue" aria-label="Link to this action">#</a>
+<h3>Set Value at Path (immutable)</h3>
+<p class=desc>Set a NATIVE typed value at an RFC 6901 pointer on a deep copy (number stays number, boolean stays boolean).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSON Pointer (e.g. /user/age)<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>New value as JSON (e.g. 31, true, \&quot;text\&quot;, {..})</td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Create intermediate objects if missing</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the updated JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsonremovevalue" data-search="remove value at path (immutable) remove the value at an rfc 6901 pointer on a deep copy; sibling order preserved. jsonremovevalue">
+<a class=anchor href="#jsonremovevalue" aria-label="Link to this action">#</a>
+<h3>Remove Value at Path (immutable)</h3>
+<p class=desc>Remove the value at an RFC 6901 pointer on a deep copy; sibling order preserved.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSON Pointer to remove<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Throw an error if missing</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the updated JSON (or file path) to variable</div>
+</section>
+<section class=action id="jsonsortkeys" data-search="sort json keys recursively rebuild objects with sorted keys for a canonical form; numbers preserved exactly. jsonsortkeys">
+<a class=anchor href="#jsonsortkeys" aria-label="Link to this action">#</a>
+<h3>Sort JSON Keys</h3>
+<p class=desc>Recursively rebuild objects with sorted keys for a canonical form; numbers preserved exactly.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Sort nested objects too</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Order</td><td>Choice</td><td><span class=choices>Ascending &middot; Descending</span></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the sorted JSON (or file path) to variable</div>
+</section>
+<div class=group><h3>Schema</h3><div class=rule></div></div>
+<section class=action id="validatejsonschema" data-search="validate against json schema (subset) validate an instance against a json schema. structural subset (type/required/properties/enum/min/max/items) — result is labelled mode=subset. validatejsonschema">
+<a class=anchor href="#validatejsonschema" aria-label="Link to this action">#</a>
+<h3>Validate Against JSON Schema (subset)</h3>
+<p class=desc>Validate an instance against a JSON Schema. Structural subset (type/required/properties/enum/min/max/items) — result is labelled mode=subset.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSON Schema<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Throw an error if invalid</td><td>True / False</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign {valid,mode,errors} to variable</div>
+</section>
+<div class=group><h3>Utility</h3><div class=rule></div></div>
+<section class=action id="prettyprintjson" data-search="pretty print / minify json reformat json as pretty or minified; numbers stay exact (no scientific notation); optional key sort. prettyprintjson">
+<a class=anchor href="#prettyprintjson" aria-label="Link to this action">#</a>
+<h3>Pretty Print / Minify JSON</h3>
+<p class=desc>Reformat JSON as pretty or minified; numbers stay exact (no scientific notation); optional key sort.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Mode</td><td>Choice</td><td><span class=choices>Pretty &middot; Minify</span></td></tr>
+<tr><td class=nm>Sort keys</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the JSON (or file path) to variable</div>
+</section>
+<section class=action id="escapeunescapejson" data-search="escape / unescape json string safely escape text into a json string literal, or unescape a json string literal back to raw text. operates on string literals only. escapeunescapejson">
+<a class=anchor href="#escapeunescapejson" aria-label="Link to this action">#</a>
+<h3>Escape / Unescape JSON String</h3>
+<p class=desc>Safely escape text into a JSON string literal, or unescape a JSON string literal back to raw text. Operates on string literals only.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>Text<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Mode</td><td>Choice</td><td><span class=choices>Escape &middot; Unescape</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the result to variable</div>
+</section>
+<section class=action id="jsondeepequals" data-search="json deep equals compare two json documents structurally; numbers by value (1 == 1.0); key order ignored; array order optional. jsondeepequals">
+<a class=anchor href="#jsondeepequals" aria-label="Link to this action">#</a>
+<h3>JSON Deep Equals</h3>
+<p class=desc>Compare two JSON documents structurally; numbers by value (1 == 1.0); key order ignored; array order optional.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Second JSON to compare<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm>Ignore array order</td><td>True / False</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> True / False &mdash; Assign true/false to variable</div>
+</section>
+<section class=action id="jsonsizecount" data-search="json size / count count immediate children, deep leaves, or utf-8 byte size of a node addressed by jsonpath. jsonsizecount">
+<a class=anchor href="#jsonsizecount" aria-label="Link to this action">#</a>
+<h3>JSON Size / Count</h3>
+<p class=desc>Count immediate children, deep leaves, or UTF-8 byte size of a node addressed by JSONPath.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>JSONPath to the node (default $)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Metric</td><td>Choice</td><td><span class=choices>Immediate child count &middot; Deep leaf count &middot; UTF-8 byte size</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Number &mdash; Assign the count to variable</div>
+</section>
+<div class=group><h3>Convert In (reverse)</h3><div class=rule></div></div>
+<section class=action id="csvtojson" data-search="csv to json parse csv (rfc 4180) into a list of objects (header row -&gt; keys). optional type inference; exact numbers. csvtojson">
+<a class=anchor href="#csvtojson" aria-label="Link to this action">#</a>
+<h3>CSV to JSON</h3>
+<p class=desc>Parse CSV (RFC 4180) into a List of objects (header row -&gt; keys). Optional type inference; exact numbers.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>CSV source<span class=req>required</span></td><td>Choice</td><td><span class=choices>CSV text &middot; CSV file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;CSV text<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;CSV file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>First row is a header</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Delimiter (default ,)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Infer numbers/booleans (else all strings)</td><td>True / False</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the List to variable</div>
+</section>
+<section class=action id="csvtotable" data-search="csv to table parse csv (rfc 4180) directly into an a360 table (header row -&gt; columns), typed cells. csvtotable">
+<a class=anchor href="#csvtotable" aria-label="Link to this action">#</a>
+<h3>CSV to Table</h3>
+<p class=desc>Parse CSV (RFC 4180) directly into an A360 Table (header row -&gt; columns), typed cells.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>CSV source<span class=req>required</span></td><td>Choice</td><td><span class=choices>CSV text &middot; CSV file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;CSV text<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;CSV file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Delimiter (default ,)</td><td>Text</td><td></td></tr>
+<tr><td class=nm>Infer numbers/booleans (else all strings)</td><td>True / False</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Table &mdash; Assign the Table to variable</div>
+</section>
+<section class=action id="xmltojson" data-search="xml to json convert xml to json (attributes -&gt; @name, repeated tags -&gt; arrays, mixed text -&gt; #text). xxe-hardened. xmltojson">
+<a class=anchor href="#xmltojson" aria-label="Link to this action">#</a>
+<h3>XML to JSON</h3>
+<p class=desc>Convert XML to JSON (attributes -&gt; @name, repeated tags -&gt; arrays, mixed text -&gt; #text). XXE-hardened.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>XML source<span class=req>required</span></td><td>Choice</td><td><span class=choices>XML text &middot; XML file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;XML text<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;XML file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Pretty-print</td><td>True / False</td><td></td></tr>
+<tr><td class=nm>Output<span class=req>required</span></td><td>Choice</td><td><span class=choices>Assign to a variable &middot; Write to a file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Output file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Text &mdash; Assign the JSON (or file path) to variable</div>
+</section>
+<section class=action id="ndjsontojson" data-search="ndjson (json lines) to list parse newline-delimited json (one json value per line) into a list. blank lines skipped. ndjsontojson">
+<a class=anchor href="#ndjsontojson" aria-label="Link to this action">#</a>
+<h3>NDJSON (JSON Lines) to List</h3>
+<p class=desc>Parse newline-delimited JSON (one JSON value per line) into a List. Blank lines skipped.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>NDJSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>NDJSON text &middot; NDJSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;NDJSON text<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;NDJSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the List to variable</div>
+</section>
+<section class=action id="querystringtojson" data-search="query string to json parse a url query string into a dictionary (url-decoded; repeated keys become a list). querystringtojson">
+<a class=anchor href="#querystringtojson" aria-label="Link to this action">#</a>
+<h3>Query String to JSON</h3>
+<p class=desc>Parse a URL query string into a Dictionary (URL-decoded; repeated keys become a List).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>Query string (e.g. a=1&amp;b=2&amp;b=3)<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign the Dictionary to variable</div>
+</section>
+<section class=action id="jwtdecode" data-search="decode jwt (no verify) decode a jwt&#x27;s header and payload (base64url) into a dictionary {header,payload,signature}. does not verify the signature. jwtdecode">
+<a class=anchor href="#jwtdecode" aria-label="Link to this action">#</a>
+<h3>Decode JWT (no verify)</h3>
+<p class=desc>Decode a JWT&#x27;s header and payload (base64url) into a Dictionary {header,payload,signature}. Does NOT verify the signature.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JWT (optionally with &#x27;Bearer &#x27; prefix)<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Dictionary &mdash; Assign {header,payload,signature} to variable</div>
+</section>
+<div class=group><h3>Arrays / Datasets</h3><div class=rule></div></div>
+<section class=action id="filterarray" data-search="filter array keep array elements whose field satisfies a condition. numeric compare when both sides are numbers. filterarray">
+<a class=anchor href="#filterarray" aria-label="Link to this action">#</a>
+<h3>Filter Array</h3>
+<p class=desc>Keep array elements whose field satisfies a condition. Numeric compare when both sides are numbers.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Field (name or /pointer, e.g. status or /user/age)<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Operator</td><td>Choice</td><td><span class=choices>eq &middot; ne &middot; gt &middot; lt &middot; gte &middot; lte &middot; contains &middot; startsWith &middot; endsWith &middot; regex &middot; exists &middot; notExists &middot; isNull &middot; isTrue &middot; isFalse</span></td></tr>
+<tr><td class=nm>Comparison value</td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the filtered List to variable</div>
+</section>
+<section class=action id="sortarray" data-search="sort array sort an array of objects by one or more fields. typed compare (numbers by value); nulls last. sortarray">
+<a class=anchor href="#sortarray" aria-label="Link to this action">#</a>
+<h3>Sort Array</h3>
+<p class=desc>Sort an array of objects by one or more fields. Typed compare (numbers by value); nulls last.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Sort keys, e.g. age:desc,name:asc<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the sorted List to variable</div>
+</section>
+<section class=action id="groupbyaggregate" data-search="group by + aggregate group an array of objects by field(s) and aggregate (count/sum/avg/min/max/first/last). bigdecimal-exact. groupbyaggregate">
+<a class=anchor href="#groupbyaggregate" aria-label="Link to this action">#</a>
+<h3>Group By + Aggregate</h3>
+<p class=desc>Group an array of objects by field(s) and aggregate (count/sum/avg/min/max/first/last). BigDecimal-exact.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Group-by field(s), comma-separated (e.g. category)<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Aggregations, e.g. count; sum:amount; avg:price</td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the grouped List to variable</div>
+</section>
+<section class=action id="deduplicatearray" data-search="deduplicate array remove duplicate array elements (whole element, or by one or more key fields). keeps first occurrence. deduplicatearray">
+<a class=anchor href="#deduplicatearray" aria-label="Link to this action">#</a>
+<h3>Deduplicate Array</h3>
+<p class=desc>Remove duplicate array elements (whole element, or by one or more key fields). Keeps first occurrence.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Key field(s), comma-separated (blank = whole element)</td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> List &mdash; Assign the deduplicated List to variable</div>
+</section>
+<section class=action id="selectfields" data-search="select fields (pick / omit) keep (pick) or drop (omit) a set of top-level keys, on an object or each element of an array of objects. selectfields">
+<a class=anchor href="#selectfields" aria-label="Link to this action">#</a>
+<h3>Select Fields (pick / omit)</h3>
+<p class=desc>Keep (pick) or drop (omit) a set of top-level keys, on an object or each element of an array of objects.</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Field names, comma-separated<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Mode</td><td>Choice</td><td><span class=choices>Keep only these &middot; Drop these</span></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Any type &mdash; Assign the trimmed value to variable</div>
+</section>
+<section class=action id="renamekeys" data-search="rename keys rename object keys everywhere in the document via an old=new mapping (deep). renamekeys">
+<a class=anchor href="#renamekeys" aria-label="Link to this action">#</a>
+<h3>Rename Keys</h3>
+<p class=desc>Rename object keys everywhere in the document via an old=new mapping (deep).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Mapping, e.g. old=new,firstName=first<span class=req>required</span></td><td>Text</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Any type &mdash; Assign the renamed value to variable</div>
+</section>
+<div class=group><h3>Privacy</h3><div class=rule></div></div>
+<section class=action id="redactjson" data-search="redact / mask json mask, hash, or partially-mask values for the given key names anywhere in the document (pii redaction). redactjson">
+<a class=anchor href="#redactjson" aria-label="Link to this action">#</a>
+<h3>Redact / Mask JSON</h3>
+<p class=desc>Mask, hash, or partially-mask values for the given key names anywhere in the document (PII redaction).</p>
+<table><thead><tr><th>Input</th><th>Type</th><th>Notes</th></tr></thead><tbody>
+<tr><td class=nm>JSON source<span class=req>required</span></td><td>Choice</td><td><span class=choices>JSON string &middot; JSON file</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON string<span class=req>required</span></td><td>Text (multi-line)</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;JSON file path<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Key names to redact, comma-separated (case-insensitive)<span class=req>required</span></td><td>Text</td><td></td></tr>
+<tr><td class=nm>Redaction mode<span class=req>required</span></td><td>Choice</td><td><span class=choices>Replace with mask text &middot; SHA-256 hash &middot; Keep last N characters</span></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Mask text</td><td>Text</td><td></td></tr>
+<tr><td class=nm class=nest>&nbsp;&nbsp;&nbsp;&nbsp;Characters to keep</td><td>Number</td><td></td></tr>
+</tbody></table>
+<div class=ret><b>Returns</b> Any type &mdash; Assign the redacted value to variable</div>
+</section>
+<h2 id=faq>FAQ</h2>
+<section class=action><h3>Can it run alongside the JSON handling I already use?</h3><p class=desc>Yes. It uses its own unique package name, so it installs alongside anything already in your Control Room and both appear in the palette. You can adopt it one action at a time rather than changing every bot at once.</p></section>
+<section class=action><h3>How are large numbers and high-precision decimals handled?</h3><p class=desc>As BigInteger and BigDecimal, and written in plain notation. A 19-digit identifier keeps every digit, and 0.0000001 stays 0.0000001 rather than becoming 1E-7. The package never narrows a number to a floating-point double, so values round-trip exactly.</p></section>
+<section class=action><h3>What type does a query return?</h3><p class=desc>Whatever the JSON holds at that path. A query landing on an object returns a Dictionary, on an array a List, on a number a Number, and on a boolean a Boolean - so there is no casting to do and no type surprise at run time.</p></section>
+<section class=action><h3>How do I tell a JSON null from a field that is absent?</h3><p class=desc>Use JSON Pointer Get or Key / Path Exists. Automation 360 has no null value type, so in a converted Dictionary, List or Table a null becomes an empty string - but at the query layer a real null is still distinct from a missing node.</p></section>
+<section class=action><h3>Does it need Jackson or Jayway JSONPath installed?</h3><p class=desc>No - they are bundled inside the package, so nothing needs installing. The Bot Agent does not put Jackson or Jayway on a custom package&#x27;s classpath, so bundling them is required, not optional. Each package loads in its own classloader, so the bundled copies cannot conflict with other packages.</p></section>
+<section class=action><h3>Is JSON Schema validation complete?</h3><p class=desc>No, and it does not claim to be. It covers a documented structural subset - type, required, properties, enum, minimum and maximum, items, const and additionalProperties - and labels its result as a subset.</p></section>
+<section class=action><h3>Where do file-writing actions put their output?</h3><p class=desc>Exactly at the path you give them. Parent folders are created if they do not exist and an existing file is overwritten - the behaviour an automation wants. Paths are not sandboxed, so supply trusted paths.</p></section>
+<section class=action><h3>My CSV opens oddly in Excel. What should I check?</h3><p class=desc>If a cell begins with =, +, - or @, Excel treats it as a formula. Switch on the sanitize-formulas option on JSON to CSV, which prefixes those cells with an apostrophe. It is off by default so that data stays exact for consumers that are not spreadsheets.</p></section>
+<section class=action><h3>Does any data leave the machine?</h3><p class=desc>No. The package makes no network call of any kind. It only reads and writes the strings and files you give it.</p></section>
+<section class=action><h3>Is it free to use commercially?</h3><p class=desc>Yes. There is no licence key and no usage limit. The bundled libraries - Jackson, Jayway JSONPath, json-smart and ASM - are all Apache-2.0, and their LICENSE and NOTICE files ship inside the jar, so the attribution requirement is already met.</p></section>
+<h2 id=attribution>Attribution</h2>
+<div class=note>This package bundles the libraries it needs inside its jar, unmodified, each loaded in the package&rsquo;s own classloader. Full licence texts ship inside the jar.</div>
+<ul class=clean>
+<li>Jackson 2.18.3 (jackson-core, jackson-databind, jackson-annotations) - Apache License 2.0. Copyright 2007- Tatu Saloranta and the Jackson contributors. The project NOTICE is retained in the jar at META-INF/NOTICE, and the FastDoubleParser notices jackson-core embeds are retained alongside it.</li>
+<li>Jayway JSONPath 2.9.0 (json-path) - Apache License 2.0. Copyright the Jayway JsonPath contributors.</li>
+<li>json-smart 2.5.2 and accessors-smart 2.5.2 - Apache License 2.0. Copyright Uriel Chemouni and the json-smart contributors.</li>
+<li>ASM 9.7.1 - BSD 3-Clause License, not Apache. Copyright (c) 2000-2011 INRIA, France Telecom. A transitive dependency of accessors-smart; its licence text ships in the jar at META-INF/ASM-LICENSE.</li>
+</ul>
+</main></div>
+<footer><div class=wrap>
+<p><strong>Advanced JSON Toolkit</strong> v1.2.0 &middot; by KhaledMostafaMe</p>
+<p>Documentation generated from the shipped package, so it always matches the actions in the product.</p>
+</div></footer>
+<script>
+(function(){
+  var f=document.getElementById('filter');if(!f)return;
+  var acts=[].slice.call(document.querySelectorAll('.action'));
+  var groups=[].slice.call(document.querySelectorAll('.group'));
+  var navs=[].slice.call(document.querySelectorAll('nav.side a[data-act]'));
+  function apply(){
+    var q=f.value.trim().toLowerCase();
+    acts.forEach(function(a){
+      var hit=!q||a.getAttribute('data-search').indexOf(q)>-1;
+      a.classList.toggle('hidden',!hit);
+    });
+    navs.forEach(function(n){
+      var hit=!q||n.getAttribute('data-act').indexOf(q)>-1;
+      n.classList.toggle('hidden',!hit);
+    });
+    groups.forEach(function(g){
+      var any=false,el=g.nextElementSibling;
+      while(el&&el.classList.contains('action')){
+        if(!el.classList.contains('hidden')){any=true;break}
+        el=el.nextElementSibling;
+      }
+      g.classList.toggle('hidden',!any);
+    });
+  }
+  f.addEventListener('input',apply);
+})();
+</script>
+</html>
