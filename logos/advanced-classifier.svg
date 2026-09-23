@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- source document -->
+  <rect x="5" y="9" width="16" height="20" rx="2" fill="#3B6FE0"/>
+  <rect x="8.5" y="14" width="9" height="1.8" rx="0.9" fill="#fff"/>
+  <rect x="8.5" y="18" width="9" height="1.8" rx="0.9" fill="#fff"/>
+  <rect x="8.5" y="22" width="6" height="1.8" rx="0.9" fill="#fff"/>
+  <!-- branch node -->
+  <circle cx="27" cy="19" r="2.6" fill="#1F2A44"/>
+  <!-- branches to three category buckets -->
+  <path d="M21 19 H27 M27 19 C33 19 33 12 39 12 M27 19 C33 19 33 19 39 19 M27 19 C33 19 33 26 39 26" stroke="#1F2A44" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <rect x="39" y="8.5" width="6.5" height="6.5" rx="1.4" fill="#22A06B"/>
+  <rect x="39" y="15.5" width="6.5" height="6.5" rx="1.4" fill="#E0A13B"/>
+  <rect x="39" y="22.5" width="6.5" height="6.5" rx="1.4" fill="#D0596B"/>
+  <!-- sorted stacks label bar -->
+  <rect x="5" y="34" width="38" height="3" rx="1.5" fill="#9AA7BD"/>
+  <rect x="5" y="39" width="26" height="3" rx="1.5" fill="#C4CDDC"/>
+</svg>
