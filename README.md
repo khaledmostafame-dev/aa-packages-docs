@@ -7,6 +7,11 @@ Published documentation for Automation 360 custom packages by KhaledMostafaMe.
 | Package | Actions | Docs |
 |---|---|---|
 | Advanced JSON Toolkit | 47 | [advanced-json-toolkit](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-json-toolkit/) |
+| Advanced Dynamics 365 | 15 | [advanced-dynamics-365](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-dynamics-365/) |
+| Advanced Classifier | 7 | [advanced-classifier](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-classifier/) |
+| Advanced OCR | 4 | [advanced-ocr](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-ocr/) |
+| Advanced MRZ | 4 | [advanced-mrz](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-mrz/) |
+| Advanced Debug Viewer | 2 | [advanced-debug-viewer](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-debug-viewer/) |
 
 Each page is generated from the shipped package jar, so the documented actions, inputs and return
 values always match the product exactly. Every action has its own page, which the package links to
