@@ -12,7 +12,7 @@ Published documentation for Automation 360 custom packages by KhaledMostafaMe.
 | Advanced OCR | 4 | [advanced-ocr](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-ocr/) |
 | Advanced MRZ | 4 | [advanced-mrz](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-mrz/) |
 | Advanced Debug Viewer | 2 | [advanced-debug-viewer](https://khaledmostafame-dev.github.io/aa-packages-docs/advanced-debug-viewer/) |
-| GeoKit for ArcGIS | 40 | [geokit-for-arcgis](https://khaledmostafame-dev.github.io/aa-packages-docs/geokit-for-arcgis/) |
+| GeoKit for ArcGIS | 41 | [geokit-for-arcgis](https://khaledmostafame-dev.github.io/aa-packages-docs/geokit-for-arcgis/) |
 | IBM Maximo | 45 | [ibm-maximo](https://khaledmostafame-dev.github.io/aa-packages-docs/ibm-maximo/) |
 
 Each page is generated from the shipped package jar, so the documented actions, inputs and return
